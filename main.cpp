@@ -1,38 +1,58 @@
 #include <iostream>
+#include <string>
 using namespace std;
+
+//RESERVATION INFO BLUEPRINT (Like Java Class :3)
+struct Reservation
+{
+    int id;
+    string name;
+    string address;
+    int roomNumber;
+    string checkIn;
+    string checkOut;
+    int guests;
+};
+
 int main(int argc, char **argv)
 {
+    Reservation add;
+
     int userChoice;
-    int attempts = 1;
     string login = "admin";
     string password = "admin";
-    string userLogin;
-    string userPW;
+    string userLogin, userPW;
 
-    cout << "Enter username: ";
-    cin >> userLogin;
-    cout << "Enter password: ";
-    cin >> userPW;
-    while (userPW != password && attempts <= 2)
+    int attempts = 0;
+    bool authenticated = false;
+    // LOGIN BLOCK
+    while (attempts < 3)
     {
-        cout << "\n";
-        cout << "Password attempt: " << attempts + 1;
-        cout << "\n";
-        cout << "Enter password again: ";
+        cout << "Enter username: ";
+        cin >> userLogin;
+
+        cout << "Enter password: ";
         cin >> userPW;
+
+        if (userLogin == login && userPW == password)
+        {
+            authenticated = true;
+            break;
+        }
+
         attempts++;
+        cout << "Invalid credentials. Attempts left: " << (3 - attempts) << "\n\n";
     }
-    if (userPW == password && attempts <= 3)
+
+    if (!authenticated)
     {
-        cout << "\n";
-        cout << "Welcome back! " << userLogin;
-    }
-    else
-    {
-        cout << "You are only allowed 3 attempts, sorry";
-        cout << "\n";
+        cout << "You are only allowed 3 attempts, sorry.\n";
         return 0;
     }
+
+    cout << "\nWelcome back, " << userLogin << "!\n";
+
+    // THE HOTEL RESERVATION MENU
     while (true)
     {
         cout << "\n";
@@ -54,6 +74,8 @@ int main(int argc, char **argv)
             cout << "\nCheck-out-date(dd/mm/yyyy) :";
             cout << "\n";
             cout << "\nNumber of guest (max 20): ";
+            cout << "\n--------------------------------------";
+            break;
         }
     }
 }
