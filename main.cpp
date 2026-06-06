@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 using namespace std;
 
@@ -7,17 +8,65 @@ struct Reservation
 {
     int id;
     string name;
-    string address;
     int roomNumber;
     string checkIn;
     string checkOut;
     int guests;
 };
 
-int main(int argc, char **argv)
-{
+//ADD MENU METHOD
+void addReservation() {
     Reservation add;
 
+    cout << "\nEnter ID: ";
+    cin >> add.id;
+
+    cout << "\nEnter Name: ";
+    cin >> add.name;
+
+    cout << "\nEnter Room Number: ";
+    cin >> add.roomNumber;
+
+    cout << "\nEnter Check-in Date: ";
+    cin >> add.checkIn;
+
+    cout << "\nEnter Check-out Date: ";
+    cin >> add.checkOut;
+
+    cout << "\nEnter Number of Guests: ";
+    cin >> add.guests;
+
+    ofstream file("reservations.txt", ios::app);
+
+    file << add.id << ","
+         << add.name << ","
+         << add.roomNumber << ","
+         << add.checkIn << ","
+         << add.checkOut << ","
+         << add.guests << "\n";
+
+    file.close();
+
+    cout << "\nReservation saved!\n";
+}
+
+//VIEW MENU METHOD
+void viewReservations() {
+    ifstream file("reservations.txt");
+
+    string line;
+
+    cout << "\n--- ALL RESERVATIONS ---\n";
+
+    while (getline(file, line)) {
+        cout << line << endl;
+    }
+
+    file.close();
+}
+
+int main(int argc, char **argv)
+{
     int userChoice;
     string login = "admin";
     string password = "admin";
@@ -58,10 +107,9 @@ int main(int argc, char **argv)
         cout << "\n";
         cout << "\nMENU";
         cout << "\n1. Add";
-        cout << "\n2. Edit";
-        cout << "\n3. Delete";
-        cout << "\n4. View";
-        cout << "\n5. Save";
+        cout << "\n2. View";
+        cout << "\n3. Edit";
+        cout << "\n4. Delete";
         cout << "\n6. Quit";
         cout << "\nOPTION: ";
         cin >> userChoice;
@@ -70,12 +118,13 @@ int main(int argc, char **argv)
         case 1:
             cout << "           New Reservation";
             cout << "\n--------------------------------------";
-            cout << "\nCheck-in-date(dd/mm/yyyy): ";
-            cout << "\nCheck-out-date(dd/mm/yyyy) :";
-            cout << "\n";
-            cout << "\nNumber of guest (max 20): ";
+            addReservation();
             cout << "\n--------------------------------------";
+            break;
+        case 2:
+            viewReservations();
             break;
         }
     }
 }
+
