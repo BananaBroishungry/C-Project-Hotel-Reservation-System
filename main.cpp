@@ -1,9 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 using namespace std;
 
-//RESERVATION INFO BLUEPRINT (Like Java Class :3)
+// RESERVATION INFO BLUEPRINT (Like Java Class :3)
 struct Reservation
 {
     int id;
@@ -14,8 +15,9 @@ struct Reservation
     int guests;
 };
 
-//ADD MENU METHOD
-void addReservation() {
+// ADD MENU METHOD
+void addReservation()
+{
     Reservation add;
 
     cout << "\nEnter ID: ";
@@ -50,19 +52,104 @@ void addReservation() {
     cout << "\nReservation saved!\n";
 }
 
-//VIEW MENU METHOD
-void viewReservations() {
+// VIEW MENU METHOD
+void viewReservations()
+{
     ifstream file("reservations.txt");
 
     string line;
 
     cout << "\n--- ALL RESERVATIONS ---\n";
 
-    while (getline(file, line)) {
+    while (getline(file, line))
+    {
         cout << line << endl;
     }
 
     file.close();
+}
+
+// EDIT MENU METHOD
+void editReservations()
+{
+    int userID;
+    string line;
+
+    ifstream file("reservations.txt");
+
+    cout << "\n--- CURRENT RESERVATIONS ---\n";
+
+    while (getline(file, line))
+    {
+        cout << line << endl;
+    }
+
+    file.close();
+
+    cout << "\nEnter ID to edit: ";
+    cin >> userID;
+
+    ifstream inFile("reservations.txt");
+    ofstream outFile("temp.txt");
+
+    Reservation edit;
+
+    bool found = false;
+
+    while (getline(inFile, line))
+    {
+        stringstream ss(line);
+        string temp;
+
+        getline(ss, temp, ','); edit.id = stoi(temp);
+        getline(ss, edit.name, ',');
+        getline(ss, temp, ','); edit.roomNumber = stoi(temp);
+        getline(ss, edit.checkIn, ',');
+        getline(ss, edit.checkOut, ',');
+        getline(ss, temp, ','); edit.guests = stoi(temp);
+
+        if (edit.id == userID)
+        {
+            found = true;
+
+            cout << "\nEditing Reservation ID " << userID << "\n";
+
+            cout << "\nEnter new Name: ";
+            cin >> edit.name;
+
+            cout << "\nEnter new Room Number: ";
+            cin >> edit.roomNumber;
+
+            cout << "\nEnter new Check-in Date: ";
+            cin >> edit.checkIn;
+
+            cout << "\nEnter new Check-out Date: ";
+            cin >> edit.checkOut;
+
+            cout << "\nEnter new Number of Guests: ";
+            cin >> edit.guests;
+        }
+
+        outFile << edit.id << ","
+                << edit.name << ","
+                << edit.roomNumber << ","
+                << edit.checkIn << ","
+                << edit.checkOut << ","
+                << edit.guests << "\n";
+    }
+
+    inFile.close();
+    outFile.close();
+
+    remove("reservations.txt");
+    rename("temp.txt", "reservations.txt");
+
+    if (found)
+    {
+        cout << "\nReservation updated successfully!";
+    }
+    else {
+        cout << "\nID not found!\n";}
 }
 
 int main(int argc, char **argv)
@@ -124,7 +211,9 @@ int main(int argc, char **argv)
         case 2:
             viewReservations();
             break;
+        case 3:
+            editReservations();
+            break;
         }
     }
 }
-
