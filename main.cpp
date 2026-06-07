@@ -167,8 +167,8 @@ int main(int argc, char **argv)
     bool authenticated = false;
 
     cout << "╔══════════════════════════════════════╗\n";
-    cout << "║          ★ GRAND HOTEL ★            ║\n";
-    cout << "║           ˗ˏˋ ꒰ ✉︎ ꒱ ˎˊ˗             ║\n";
+    cout << "║          ★ GRAND HOTEL ★             ║\n";
+    cout << "║           ˗ˏˋ ꒰ ✉︎ ꒱ ˎˊ˗            ║\n";
     cout << "║       Reservation Management         ║\n";
     cout << "╚══════════════════════════════════════╝\n";
 
@@ -229,6 +229,15 @@ int main(int argc, char **argv)
         case 3:
             editReservations();
             break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            return 0;
+
+        default:
+            cout << "Invalid! Please try again...\n";
         }
     }
 }
