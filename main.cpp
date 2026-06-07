@@ -22,13 +22,20 @@ void addReservation()
     Reservation add;
 
     cout << "\nEnter ID: ";
-    cin >> add.id;
-
+    while (!(cin >> add.id)) {
+        cout << "Invalid input. Enter a number: ";
+        cin.clear();
+        cin.ignore(1000, '\n');
+    }
     cout << "\nEnter Name: ";
     cin >> add.name;
 
     cout << "\nEnter Room Number: ";
-    cin >> add.roomNumber;
+    while (!(cin >> add.roomNumber)) {
+        cout << "Invalid input. Enter a number: ";
+        cin.clear();
+        cin.ignore(1000, '\n');
+    }
 
     cout << "\nEnter Check-in Date: ";
     cin >> add.checkIn;
@@ -37,7 +44,11 @@ void addReservation()
     cin >> add.checkOut;
 
     cout << "\nEnter Number of Guests: ";
-    cin >> add.guests;
+    while (!(cin >> add.guests)) {
+        cout << "Invalid input. Enter a number: ";
+        cin.clear();
+        cin.ignore(1000, '\n');
+    }
 
     ofstream file("reservations.txt", ios::app);
 
@@ -64,7 +75,27 @@ void viewReservations()
 
     while (getline(file, line))
     {
-        cout << line << endl;
+        stringstream ss(line);
+        string temp;
+
+        Reservation view;
+
+        getline(ss, temp, ',');
+        view.id = stoi(temp);
+        getline(ss, view.name, ',');
+        getline(ss, temp, ',');
+        view.roomNumber = stoi(temp);
+        getline(ss, view.checkIn, ',');
+        getline(ss, view.checkOut, ',');
+        getline(ss, temp, ',');
+        view.guests = stoi(temp);
+
+        cout << "\nID " << view.id << "\n";
+        cout << "\nName: " << view.name;
+        cout << "\nRoom Number: " << view.roomNumber;
+        cout << "\nCheck-in Date: " << view.checkIn;
+        cout << "\nCheck-out Date: " << view.checkOut;
+        cout << "\nNumber of Guests: " << view.guests << "\n";
     }
 
     file.close();
@@ -102,12 +133,15 @@ void editReservations()
         stringstream ss(line);
         string temp;
 
-        getline(ss, temp, ','); edit.id = stoi(temp);
+        getline(ss, temp, ',');
+        edit.id = stoi(temp);
         getline(ss, edit.name, ',');
-        getline(ss, temp, ','); edit.roomNumber = stoi(temp);
+        getline(ss, temp, ',');
+        edit.roomNumber = stoi(temp);
         getline(ss, edit.checkIn, ',');
         getline(ss, edit.checkOut, ',');
-        getline(ss, temp, ','); edit.guests = stoi(temp);
+        getline(ss, temp, ',');
+        edit.guests = stoi(temp);
 
         if (edit.id == userID)
         {
@@ -149,8 +183,119 @@ void editReservations()
     {
         cout << "\nReservation updated successfully!";
     }
+    else
+    {
+        cout << "\nID not found!\n";
+    }
+}
+// SEARCH MENU METHOD
+void searchReservations()
+{
+    int searchID;
+    string line;
+    bool found = false;
+
+    ifstream file("reservations.txt");
+
+    cout << "\nEnter ID to search: ";
+    cin >> searchID;
+
+    cout << "\n--- SEARCH RESULT ---\n";
+
+    while (getline(file, line))
+    {
+        stringstream ss(line);
+        string temp;
+
+        Reservation search;
+
+        getline(ss, temp, ',');
+        search.id = stoi(temp);
+        getline(ss, search.name, ',');
+        getline(ss, temp, ',');
+        search.roomNumber = stoi(temp);
+        getline(ss, search.checkIn, ',');
+        getline(ss, search.checkOut, ',');
+        getline(ss, temp, ',');
+        search.guests = stoi(temp);
+
+        if (search.id == searchID)
+        {
+            found = true;
+
+            cout << "\nID " << search.id << "\n";
+            cout << "\nName: " << search.name;
+            cout << "\nRoom Number: " << search.roomNumber;
+            cout << "\nCheck-in Date: " << search.checkIn;
+            cout << "\nCheck-out Date: " << search.checkOut;
+            cout << "\nNumber of Guests: " << search.guests << "\n";
+
+            break;
+        }
+    }
+
+    file.close();
+
+    if (!found)
+    {
+        cout << "ID not found!\n";
+    }
+}
+// DELETE MENU METHOD
+void deleteReservations()
+{
+    int deleteID;
+    string line;
+    bool found = false;
+
+    ifstream inFile("reservations.txt");
+    ofstream outFile("temp.txt");
+
+    cout << "\nEnter ID to delete: ";
+    cin >> deleteID;
+
+    cout << "\n--- SEARCH RESULT ---\n";
+
+    while (getline(inFile, line))
+    {
+        stringstream ss(line);
+        string temp;
+
+        Reservation del;
+
+        getline(ss, temp, ','); del.id = stoi(temp);
+        getline(ss, del.name, ',');
+        getline(ss, temp, ','); del.roomNumber = stoi(temp);
+        getline(ss, del.checkIn, ',');
+        getline(ss, del.checkOut, ',');
+        getline(ss, temp, ','); del.guests = stoi(temp);
+
+        if (del.id == deleteID)
+        {
+            found = true;
+            continue;
+        }
+
+        outFile << del.id << ","
+                << del.name << ","
+                << del.roomNumber << ","
+                << del.checkIn << ","
+                << del.checkOut << ","
+                << del.guests << "\n";
+    }
+
+    inFile.close();
+    outFile.close();
+
+    remove("reservations.txt");
+    rename("temp.txt", "reservations.txt");
+
+    if (found) {
+        cout << "\nReservation deleted successfully!\n";
+    }
     else {
-        cout << "\nID not found!\n";}
+        cout << "\nID not found!\n";
+    }
 }
 
 int main(int argc, char **argv)
@@ -171,7 +316,6 @@ int main(int argc, char **argv)
     cout << "║           ˗ˏˋ ꒰ ✉︎ ꒱ ˎˊ˗            ║\n";
     cout << "║       Reservation Management         ║\n";
     cout << "╚══════════════════════════════════════╝\n";
-
 
     // LOGIN BLOCK
     while (attempts < 3)
@@ -204,14 +348,14 @@ int main(int argc, char **argv)
     while (true)
     {
         cout << "\n╔══════════════════════════════════════╗\n";
-        cout << "║               MENU                  ║\n";
+        cout << "║               MENU                   ║\n";
         cout << "╠══════════════════════════════════════╣\n";
-        cout << "║ 1. Add Reservation                  ║\n";
-        cout << "║ 2. View Reservations                ║\n";
-        cout << "║ 3. Edit Reservation                 ║\n";
-        cout << "║ 4. Delete Reservation               ║\n";
-        cout << "║ 5. Search Reservation               ║\n";
-        cout << "║ 6. Quit                             ║\n";
+        cout << "║ 1. Add Reservation                   ║\n";
+        cout << "║ 2. View Reservations                 ║\n";
+        cout << "║ 3. Edit Reservation                  ║\n";
+        cout << "║ 4. Delete Reservation                ║\n";
+        cout << "║ 5. Search Reservation                ║\n";
+        cout << "║ 6. Quit                              ║\n";
         cout << "╚══════════════════════════════════════╝\n";
         cout << "Option: ";
         cin >> userChoice;
@@ -230,8 +374,10 @@ int main(int argc, char **argv)
             editReservations();
             break;
         case 4:
+            deleteReservations();
             break;
         case 5:
+            searchReservations();
             break;
         case 6:
             return 0;
