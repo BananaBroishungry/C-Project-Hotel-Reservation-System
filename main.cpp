@@ -161,6 +161,14 @@ int main(int argc, char **argv)
 
     int attempts = 0;
     bool authenticated = false;
+
+    cout << "╔══════════════════════════════════════╗\n";
+    cout << "║          ★ GRAND HOTEL ★            ║\n";
+    cout << "║           ˗ˏˋ ꒰ ✉︎ ꒱ ˎˊ˗             ║\n";
+    cout << "║       Reservation Management         ║\n";
+    cout << "╚══════════════════════════════════════╝\n";
+
+
     // LOGIN BLOCK
     while (attempts < 3)
     {
@@ -191,14 +199,17 @@ int main(int argc, char **argv)
     // THE HOTEL RESERVATION MENU
     while (true)
     {
-        cout << "\n";
-        cout << "\nMENU";
-        cout << "\n1. Add";
-        cout << "\n2. View";
-        cout << "\n3. Edit";
-        cout << "\n4. Delete";
-        cout << "\n6. Quit";
-        cout << "\nOPTION: ";
+        cout << "\n╔══════════════════════════════════════╗\n";
+        cout << "║               MENU                  ║\n";
+        cout << "╠══════════════════════════════════════╣\n";
+        cout << "║ 1. Add Reservation                  ║\n";
+        cout << "║ 2. View Reservations                ║\n";
+        cout << "║ 3. Edit Reservation                 ║\n";
+        cout << "║ 4. Delete Reservation               ║\n";
+        cout << "║ 5. Search Reservation               ║\n";
+        cout << "║ 6. Quit                             ║\n";
+        cout << "╚══════════════════════════════════════╝\n";
+        cout << "Option: ";
         cin >> userChoice;
         switch (userChoice)
         {
