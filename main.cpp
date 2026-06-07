@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <windows.h>
 using namespace std;
 
 // RESERVATION INFO BLUEPRINT (Like Java Class :3)
@@ -154,6 +155,9 @@ void editReservations()
 
 int main(int argc, char **argv)
 {
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+
     int userChoice;
     string login = "admin";
     string password = "admin";
