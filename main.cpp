@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 #include <string>
 #include <windows.h>
 using namespace std;
@@ -19,10 +20,12 @@ struct Reservation
 // ADD MENU METHOD
 void addReservation()
 {
+    string userSave;
     Reservation add;
 
     cout << "\nEnter ID: ";
-    while (!(cin >> add.id)) {
+    while (!(cin >> add.id))
+    {
         cout << "Invalid input. Enter a number: ";
         cin.clear();
         cin.ignore(1000, '\n');
@@ -31,7 +34,8 @@ void addReservation()
     cin >> add.name;
 
     cout << "\nEnter Room Number: ";
-    while (!(cin >> add.roomNumber)) {
+    while (!(cin >> add.roomNumber))
+    {
         cout << "Invalid input. Enter a number: ";
         cin.clear();
         cin.ignore(1000, '\n');
@@ -44,24 +48,35 @@ void addReservation()
     cin >> add.checkOut;
 
     cout << "\nEnter Number of Guests: ";
-    while (!(cin >> add.guests)) {
+    while (!(cin >> add.guests))
+    {
         cout << "Invalid input. Enter a number: ";
         cin.clear();
         cin.ignore(1000, '\n');
     }
 
-    ofstream file("reservations.txt", ios::app);
+    cout << "Save reservation or cancel? (s/c): ";
+    cin >> userSave;
 
-    file << add.id << ","
-         << add.name << ","
-         << add.roomNumber << ","
-         << add.checkIn << ","
-         << add.checkOut << ","
-         << add.guests << "\n";
+    if (userSave == "s")
+    {
+        ofstream file("reservations.txt", ios::app);
 
-    file.close();
+        file << add.id << ","
+             << add.name << ","
+             << add.roomNumber << ","
+             << add.checkIn << ","
+             << add.checkOut << ","
+             << add.guests << "\n";
 
-    cout << "\nReservation saved!\n";
+        file.close();
+
+        cout << "\nReservation saved!\n";
+    }
+    else if (userSave == "c")
+    {
+        cout << "\nReservation cancelled...\n";
+    }
 }
 
 // VIEW MENU METHOD
@@ -80,22 +95,21 @@ void viewReservations()
 
         Reservation view;
 
-        getline(ss, temp, ',');
-        view.id = stoi(temp);
+        getline(ss, temp, ','); view.id = stoi(temp);
         getline(ss, view.name, ',');
-        getline(ss, temp, ',');
-        view.roomNumber = stoi(temp);
+        getline(ss, temp, ','); view.roomNumber = stoi(temp);
         getline(ss, view.checkIn, ',');
         getline(ss, view.checkOut, ',');
-        getline(ss, temp, ',');
-        view.guests = stoi(temp);
+        getline(ss, temp, ','); view.guests = stoi(temp);
 
-        cout << "\nID " << view.id << "\n";
-        cout << "\nName: " << view.name;
-        cout << "\nRoom Number: " << view.roomNumber;
-        cout << "\nCheck-in Date: " << view.checkIn;
-        cout << "\nCheck-out Date: " << view.checkOut;
-        cout << "\nNumber of Guests: " << view.guests << "\n";
+        cout << left
+             << setw(5) << view.id
+             << setw(12) << view.name
+             << setw(7) << view.roomNumber
+             << setw(12) << view.checkIn
+             << setw(12) << view.checkOut
+             << setw(6) << view.guests
+             << "\n";
     }
 
     file.close();
@@ -112,8 +126,26 @@ void editReservations()
     cout << "\n--- CURRENT RESERVATIONS ---\n";
 
     while (getline(file, line))
-    {
-        cout << line << endl;
+    {   
+        stringstream ss(line);
+        string temp;
+        Reservation preview;
+        
+        getline(ss, temp, ','); preview.id = stoi(temp);
+        getline(ss, preview.name, ',');
+        getline(ss, temp, ','); preview.roomNumber = stoi(temp);
+        getline(ss, preview.checkIn, ',');
+        getline(ss, preview.checkOut, ',');
+        getline(ss, temp, ','); preview.guests = stoi(temp);
+
+        cout << left
+             << setw(5) << preview.id
+             << setw(12) << preview.name
+             << setw(7) << preview.roomNumber
+             << setw(12) << preview.checkIn
+             << setw(12) << preview.checkOut
+             << setw(6) << preview.guests
+             << "\n";
     }
 
     file.close();
@@ -132,16 +164,13 @@ void editReservations()
     {
         stringstream ss(line);
         string temp;
-
-        getline(ss, temp, ',');
-        edit.id = stoi(temp);
+        
+        getline(ss, temp, ','); edit.id = stoi(temp);
         getline(ss, edit.name, ',');
-        getline(ss, temp, ',');
-        edit.roomNumber = stoi(temp);
+        getline(ss, temp, ','); edit.roomNumber = stoi(temp);
         getline(ss, edit.checkIn, ',');
         getline(ss, edit.checkOut, ',');
-        getline(ss, temp, ',');
-        edit.guests = stoi(temp);
+        getline(ss, temp, ','); edit.guests = stoi(temp);
 
         if (edit.id == userID)
         {
@@ -176,9 +205,22 @@ void editReservations()
     inFile.close();
     outFile.close();
 
-    remove("reservations.txt");
-    rename("temp.txt", "reservations.txt");
+    string userSave;
 
+    cout << "Save reservation or cancel? (s/c): ";
+    cin >> userSave;
+
+    if (userSave == "s")
+    {
+        remove("reservations.txt");
+        rename("temp.txt", "reservations.txt");
+        cout << ("\nChanges saved!\n");
+    }
+    else
+    {
+        remove("temp.txt");
+        cout << "\nReservation cancelled...\n";
+    }
     if (found)
     {
         cout << "\nReservation updated successfully!";
@@ -209,15 +251,12 @@ void searchReservations()
 
         Reservation search;
 
-        getline(ss, temp, ',');
-        search.id = stoi(temp);
+        getline(ss, temp, ','); search.id = stoi(temp);
         getline(ss, search.name, ',');
-        getline(ss, temp, ',');
-        search.roomNumber = stoi(temp);
+        getline(ss, temp, ','); search.roomNumber = stoi(temp);
         getline(ss, search.checkIn, ',');
         getline(ss, search.checkOut, ',');
-        getline(ss, temp, ',');
-        search.guests = stoi(temp);
+        getline(ss, temp, ','); search.guests = stoi(temp);
 
         if (search.id == searchID)
         {
@@ -287,13 +326,28 @@ void deleteReservations()
     inFile.close();
     outFile.close();
 
-    remove("reservations.txt");
-    rename("temp.txt", "reservations.txt");
+    string userSave;
 
-    if (found) {
+    cout << "Save reservation or cancel? (s/c): ";
+    cin >> userSave;
+
+    if (userSave == "s")
+    {
+        remove("reservations.txt");
+        rename("temp.txt", "reservations.txt");
+        cout << ("\nChanges saved!\n");
+    }
+    else
+    {
+        remove("temp.txt");
+        cout << "\nDelete cancelled...\n";
+    }
+    if (found)
+    {
         cout << "\nReservation deleted successfully!\n";
     }
-    else {
+    else
+    {
         cout << "\nID not found!\n";
     }
 }
