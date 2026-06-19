@@ -23,17 +23,27 @@ void addReservation()
     string userSave;
     Reservation add;
 
-    cout << "\nEnter ID: ";
+    cout << "\n";
+    cout << "╔══════════════════════════════════════╗\n";
+    cout << "║              🛎️ FRONT DESK           ║\n";
+    cout << "║              GRAND HOTEL             ║\n";
+    cout << "╠══════════════════════════════════════╣\n";
+    cout << "║         Guest Check-In Form          ║\n";
+    cout << "╚══════════════════════════════════════╝\n\n";
+
+    cout << "Reservation ID : ";
+
+    
     while (!(cin >> add.id))
     {
         cout << "Invalid input. Enter a number: ";
         cin.clear();
         cin.ignore(1000, '\n');
     }
-    cout << "\nEnter Name: ";
+    cout << "\nGuest Name     : ";
     cin >> add.name;
 
-    cout << "\nEnter Room Number: ";
+    cout << "\nRoom Number    : ";
     while (!(cin >> add.roomNumber))
     {
         cout << "Invalid input. Enter a number: ";
@@ -41,13 +51,13 @@ void addReservation()
         cin.ignore(1000, '\n');
     }
 
-    cout << "\nEnter Check-in Date: ";
+    cout << "\nCheck-In Date  : ";
     cin >> add.checkIn;
 
-    cout << "\nEnter Check-out Date: ";
+    cout << "\nCheck-out Date: ";
     cin >> add.checkOut;
 
-    cout << "\nEnter Number of Guests: ";
+    cout << "\nGuests: ";
     while (!(cin >> add.guests))
     {
         cout << "Invalid input. Enter a number: ";
@@ -55,7 +65,17 @@ void addReservation()
         cin.ignore(1000, '\n');
     }
 
-    cout << "Save reservation or cancel? (s/c): ";
+    cout << "\n";
+    cout << "╔══════════════════════════════════════╗\n";
+    cout << "║            FRONT DESK                ║\n";
+    cout << "╠══════════════════════════════════════╣\n";
+    cout << "║      Would you like to proceed?      ║\n";
+    cout << "╚══════════════════════════════════════╝\n\n";
+
+    cout << "[S] Complete Check-In\n";
+    cout << "[C] Cancel Check-In\n\n";
+
+    cout << "Select Option: ";
     cin >> userSave;
 
     if (userSave == "s")
@@ -71,11 +91,21 @@ void addReservation()
 
         file.close();
 
-        cout << "\nReservation saved!\n";
+        cout << "\n";
+        cout << "╔══════════════════════════════════════╗\n";
+        cout << "║       CHECK-IN COMPLETED ✓          ║\n";
+        cout << "╠══════════════════════════════════════╣\n";
+        cout << "║ Guest successfully registered.       ║\n";
+        cout << "╚══════════════════════════════════════╝\n";
     }
     else if (userSave == "c")
     {
-        cout << "\nReservation cancelled...\n";
+        cout << "\n";
+    cout << "╔══════════════════════════════════════╗\n";
+    cout << "║       CHECK-IN CANCELLED ✕          ║\n";
+    cout << "╠══════════════════════════════════════╣\n";
+    cout << "║ No reservation has been saved.       ║\n";
+    cout << "╚══════════════════════════════════════╝\n";
     }
 }
 
@@ -86,7 +116,14 @@ void viewReservations()
 
     string line;
 
-    cout << "\n--- ALL RESERVATIONS ---\n";
+    cout << "\n";
+    cout << "╔══════════════════════════════════════════════╗\n";
+    cout << "║            RESERVATION RECORDS               ║\n";
+    cout << "╚══════════════════════════════════════════════╝\n\n"; 
+    
+    cout << "\n╔════╦══════════════╦══════╦════════════╦════════════╦════════╗\n";
+    cout << "║ ID ║ Name         ║ Room ║ Check-In   ║ Check-Out  ║ Guests ║\n";
+    cout << "╠════╬══════════════╬══════╬════════════╬════════════╬════════╣\n";
 
     while (getline(file, line))
     {
@@ -102,16 +139,16 @@ void viewReservations()
         getline(ss, view.checkOut, ',');
         getline(ss, temp, ','); view.guests = stoi(temp);
 
-        cout << left
-             << setw(5) << view.id
-             << setw(12) << view.name
-             << setw(7) << view.roomNumber
-             << setw(12) << view.checkIn
-             << setw(12) << view.checkOut
-             << setw(6) << view.guests
-             << "\n";
+    cout << "║ "
+        << left << setw(2) << view.id << " ║ "
+        << setw(12) << view.name << " ║ "
+        << setw(4) << view.roomNumber << " ║ "
+        << setw(10) << view.checkIn << " ║ "
+        << setw(10) << view.checkOut << " ║ "
+        << setw(6) << view.guests << " ║\n";
     }
 
+    cout << "╚════╩══════════════╩══════╩════════════╩════════════╩════════╝\n";
     file.close();
 }
 
@@ -123,7 +160,13 @@ void editReservations()
 
     ifstream file("reservations.txt");
 
-    cout << "\n--- CURRENT RESERVATIONS ---\n";
+    cout << "\n╔══════════════════════════════════════╗\n";
+    cout << "║         CURRENT RESERVATIONS         ║\n";
+    cout << "╚══════════════════════════════════════╝\n";
+
+    cout << "\n╔═════╦══════════════╦══════╦════════════╦════════════╦════════╗\n";
+    cout << "║ ID  ║ Name         ║ Room ║ Check-In   ║ Check-Out  ║ Guests ║\n";
+    cout << "╠═════╬══════════════╬══════╬════════════╬════════════╬════════╣\n";
 
     while (getline(file, line))
     {   
@@ -138,15 +181,15 @@ void editReservations()
         getline(ss, preview.checkOut, ',');
         getline(ss, temp, ','); preview.guests = stoi(temp);
 
-        cout << left
-             << setw(5) << preview.id
-             << setw(12) << preview.name
-             << setw(7) << preview.roomNumber
-             << setw(12) << preview.checkIn
-             << setw(12) << preview.checkOut
-             << setw(6) << preview.guests
-             << "\n";
+        cout << "║ "
+     << setw(3)  << left << preview.id << " ║ "
+     << setw(12) << left << preview.name << " ║ "
+     << setw(4)  << left << preview.roomNumber << " ║ "
+     << setw(10) << left << preview.checkIn << " ║ "
+     << setw(10) << left << preview.checkOut << " ║ "
+     << setw(6)  << left << preview.guests << " ║\n";
     }
+    cout << "╚═════╩══════════════╩══════╩════════════╩════════════╩════════╝\n";
 
     file.close();
 
@@ -173,27 +216,38 @@ void editReservations()
         getline(ss, temp, ','); edit.guests = stoi(temp);
 
         if (edit.id == userID)
-        {
-            found = true;
+{
+    found = true;
 
-            cout << "\nEditing Reservation ID " << userID << "\n";
+    cout << "\n╔══════════════════════════════════════╗\n";
+    cout << "║         RESERVATION FOUND ✓          ║\n";
+    cout << "╠══════════════════════════════════════╣\n";
+    cout << "║ ID:          " << setw(20) << left << edit.id << "    ║\n";
+    cout << "║ Name:        " << setw(20) << left << edit.name << "    ║\n";
+    cout << "║ Room:        " << setw(20) << left << edit.roomNumber << "    ║\n";
+    cout << "║ Check-In:    " << setw(20) << left << edit.checkIn << "    ║\n";
+    cout << "║ Check-Out:   " << setw(20) << left << edit.checkOut << "    ║\n";
+    cout << "║ Guests:      " << setw(20) << left << edit.guests << "    ║\n";
+    cout << "╚══════════════════════════════════════╝\n";
 
-            cout << "\nEnter new Name: ";
-            cin >> edit.name;
+    cout << "\n--------------------------------------\n";
+    cout << "Enter NEW values:\n\n";
 
-            cout << "\nEnter new Room Number: ";
-            cin >> edit.roomNumber;
+    cout << "Name       : ";
+    cin >> edit.name;
 
-            cout << "\nEnter new Check-in Date: ";
-            cin >> edit.checkIn;
+    cout << "Room       : ";
+    cin >> edit.roomNumber;
 
-            cout << "\nEnter new Check-out Date: ";
-            cin >> edit.checkOut;
+    cout << "Check-In   : ";
+    cin >> edit.checkIn;
 
-            cout << "\nEnter new Number of Guests: ";
-            cin >> edit.guests;
-        }
+    cout << "Check-Out  : ";
+    cin >> edit.checkOut;
 
+    cout << "Guests     : ";
+    cin >> edit.guests;
+}
         outFile << edit.id << ","
                 << edit.name << ","
                 << edit.roomNumber << ","
@@ -207,7 +261,9 @@ void editReservations()
 
     string userSave;
 
-    cout << "Save reservation or cancel? (s/c): ";
+    cout << "\n--------------------------------------\n";
+    cout << "[S] Save   [C] Cancel\n";
+    cout << "Select option: ";
     cin >> userSave;
 
     if (userSave == "s")
@@ -237,18 +293,43 @@ void searchReservations()
     string line;
     bool found = false;
 
-    ifstream file("reservations.txt");
+   cout << "\n";
+    cout << "╔══════════════════════════════════════╗\n";
+    cout << "║          🏨 GRAND HOTEL              ║\n";
+    cout << "║          GUEST SEARCH PANEL          ║\n";
+    cout << "╠══════════════════════════════════════╣\n";
+    cout << "║ Please enter Reservation ID below:   ║\n";
+    cout << "║                                      ║\n";
+    cout << "║   ID:  ";
 
-    cout << "\nEnter ID to search: ";
     cin >> searchID;
 
-    cout << "\n--- SEARCH RESULT ---\n";
+    cout << "║                                      ║\n";
+    cout << "╚══════════════════════════════════════╝\n";
+
+
+    cout << "\n";
+    cout << "╔══════════════════════════════════════╗\n";
+    cout << "║           SEARCHING SYSTEM...        ║\n";
+    cout << "╚══════════════════════════════════════╝\n\n";
+
+    cout << "Accessing database";
+
+    for (int i = 0; i < 4; i++)
+    {
+        Sleep(400);
+        cout << ".";
+    }
+
+    cout << "\nMatching records...\n";
+    Sleep(800);
+
+    ifstream file("reservations.txt");
 
     while (getline(file, line))
     {
         stringstream ss(line);
         string temp;
-
         Reservation search;
 
         getline(ss, temp, ','); search.id = stoi(temp);
@@ -262,12 +343,16 @@ void searchReservations()
         {
             found = true;
 
-            cout << "\nID " << search.id << "\n";
-            cout << "\nName: " << search.name;
-            cout << "\nRoom Number: " << search.roomNumber;
-            cout << "\nCheck-in Date: " << search.checkIn;
-            cout << "\nCheck-out Date: " << search.checkOut;
-            cout << "\nNumber of Guests: " << search.guests << "\n";
+            cout << "╔══════════════════════════════════════╗\n";
+            cout << "║        RESERVATION FOUND ✓           ║\n";
+            cout << "╠══════════════════════════════════════╣\n";
+            cout << "║ ID:          " << setw(20) << left << search.id << "    ║\n";
+            cout << "║ Name:        " << setw(20) << left << search.name << "    ║\n";
+            cout << "║ Room:        " << setw(20) << left << search.roomNumber << "    ║\n";
+            cout << "║ Check-In:    " << setw(20) << left << search.checkIn << "    ║\n";
+            cout << "║ Check-Out:   " << setw(20) << left << search.checkOut << "    ║\n";
+            cout << "║ Guests:      " << setw(20) << left << search.guests << "    ║\n";
+            cout << "╚══════════════════════════════════════╝\n";
 
             break;
         }
@@ -277,30 +362,59 @@ void searchReservations()
 
     if (!found)
     {
-        cout << "ID not found!\n";
+        cout << "╔══════════════════════════════════════╗\n";
+        cout << "║        RESERVATION NOT FOUND ✕      ║\n";
+        cout << "╠══════════════════════════════════════╣\n";
+        cout << "║ No record matches this ID.          ║\n";
+        cout << "╚══════════════════════════════════════╝\n";
     }
 }
+
+
 // DELETE MENU METHOD
 void deleteReservations()
 {
     int deleteID;
     string line;
     bool found = false;
+    string userSave;
+
+    cout << "\n";
+    cout << "╔══════════════════════════════════════╗\n";
+    cout << "║         🗑 DELETE RESERVATION        ║\n";
+    cout << "║         GRAND HOTEL SYSTEM           ║\n";
+    cout << "╠══════════════════════════════════════╣\n";
+    cout << "║ Enter Reservation ID below:          ║\n";
+    cout << "║                                      ║\n";
+    cout << "║   ID:  ";
+
+    cin >> deleteID;
+
+    cout << "║                                      ║\n";
+    cout << "╚══════════════════════════════════════╝\n";
+
+    cout << "\n╔══════════════════════════════════════╗\n";
+    cout << "║        VERIFYING RECORD...           ║\n";
+    cout << "╚══════════════════════════════════════╝\n\n";
+
+    cout << "Searching...";
+
+    for (int i = 0; i < 3; i++)
+    {
+        Sleep(500);
+        cout << ".";
+    }
+    cout << "\n";
 
     ifstream inFile("reservations.txt");
     ofstream outFile("temp.txt");
 
-    cout << "\nEnter ID to delete: ";
-    cin >> deleteID;
-
-    cout << "\n--- SEARCH RESULT ---\n";
+    Reservation del;
 
     while (getline(inFile, line))
     {
         stringstream ss(line);
         string temp;
-
-        Reservation del;
 
         getline(ss, temp, ','); del.id = stoi(temp);
         getline(ss, del.name, ',');
@@ -312,7 +426,19 @@ void deleteReservations()
         if (del.id == deleteID)
         {
             found = true;
-            continue;
+
+            cout << "\n╔══════════════════════════════════════╗\n";
+            cout << "║        RESERVATION FOUND ✓            ║\n";
+            cout << "╠══════════════════════════════════════╣\n";
+            cout << "║ ID:          " << setw(20) << left << del.id << "    ║\n";
+            cout << "║ Name:        " << setw(20) << left << del.name << "    ║\n";
+            cout << "║ Room:        " << setw(20) << left << del.roomNumber << "    ║\n";
+            cout << "║ Check-In:    " << setw(20) << left << del.checkIn << "    ║\n";
+            cout << "║ Check-Out:   " << setw(20) << left << del.checkOut << "    ║\n";
+            cout << "║ Guests:      " << setw(20) << left << del.guests << "    ║\n";
+            cout << "╚══════════════════════════════════════╝\n";
+
+            continue; 
         }
 
         outFile << del.id << ","
@@ -326,29 +452,49 @@ void deleteReservations()
     inFile.close();
     outFile.close();
 
-    string userSave;
+    // ❗ confirmation UI
+    cout << "\n╔══════════════════════════════════════╗\n";
+    cout << "║      CONFIRM DELETE ACTION           ║\n";
+    cout << "╠══════════════════════════════════════╣\n";
+    cout << "║ [S] Yes, Delete Reservation          ║\n";
+    cout << "║ [C] Cancel                           ║\n";
+    cout << "╚══════════════════════════════════════╝\n\n";
 
-    cout << "Save reservation or cancel? (s/c): ";
+    cout << "Choice ► ";
     cin >> userSave;
 
     if (userSave == "s")
     {
+        cout << "\nDeleting record...";
+
+        for (int i = 0; i < 4; i++)
+        {
+            Sleep(400);
+            cout << ".";
+        }
+
         remove("reservations.txt");
         rename("temp.txt", "reservations.txt");
-        cout << ("\nChanges saved!\n");
+
+        cout << "\n\n╔══════════════════════════════════════╗\n";
+        cout << "║     DELETION SUCCESSFUL ✓            ║\n";
+        cout << "║     Record removed from system       ║\n";
+        cout << "╚══════════════════════════════════════╝\n";
     }
     else
     {
         remove("temp.txt");
-        cout << "\nDelete cancelled...\n";
+
+        cout << "\n╔══════════════════════════════════════╗\n";
+        cout << "║        OPERATION CANCELLED ✕         ║\n";
+        cout << "╚══════════════════════════════════════╝\n";
     }
-    if (found)
+
+    if (!found)
     {
-        cout << "\nReservation deleted successfully!\n";
-    }
-    else
-    {
-        cout << "\nID not found!\n";
+        cout << "\n╔══════════════════════════════════════╗\n";
+        cout << "║        RESERVATION NOT FOUND ✕      ║\n";
+        cout << "╚══════════════════════════════════════╝\n";
     }
 }
 
@@ -367,17 +513,17 @@ int main(int argc, char **argv)
 
     cout << "╔══════════════════════════════════════╗\n";
     cout << "║          ★ GRAND HOTEL ★             ║\n";
-    cout << "║           ˗ˏˋ ꒰ ✉︎ ꒱ ˎˊ˗            ║\n";
+    cout << "║          ˗ˏˋ ꒰ ✉︎ ꒱ ˎˊ˗             ║\n";
     cout << "║       Reservation Management         ║\n";
     cout << "╚══════════════════════════════════════╝\n";
 
     // LOGIN BLOCK
     while (attempts < 3)
     {
-        cout << "Enter username: ";
+        cout << "► Username: ";
         cin >> userLogin;
 
-        cout << "Enter password: ";
+        cout << "► Password: ";
         cin >> userPW;
 
         if (userLogin == login && userPW == password)
@@ -387,7 +533,8 @@ int main(int argc, char **argv)
         }
 
         attempts++;
-        cout << "Invalid credentials. Attempts left: " << (3 - attempts) << "\n\n";
+        cout << "\n⚠ Invalid credentials!\n";
+        cout << "Remaining Attempts: " << (3 - attempts) << "\n";
     }
 
     if (!authenticated)
@@ -396,7 +543,13 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    cout << "\nWelcome back, " << userLogin << "!\n";
+    cout << "\n╔══════════════════════════════════════╗\n";
+    cout << "║          LOGIN SUCCESSFUL ✓          ║\n";
+    cout << "║                                      ║\n";
+    cout << "║       Welcome to Grand Hotel,        ║\n";
+    cout << "║              " << userLogin;
+    cout << "                   ║\n";
+    cout << "╚══════════════════════════════════════╝\n";   
 
     // THE HOTEL RESERVATION MENU
     while (true)
@@ -434,7 +587,54 @@ int main(int argc, char **argv)
             searchReservations();
             break;
         case 6:
-            return 0;
+{
+    string choice;
+
+    cout << "\n";
+    cout << "╔══════════════════════════════════════╗\n";
+    cout << "║           EXIT SYSTEM                ║\n";
+    cout << "║           GRAND HOTEL                ║\n";
+    cout << "╠══════════════════════════════════════╣\n";
+    cout << "║ Are you sure you want to quit?       ║\n";
+    cout << "║                                      ║\n";
+    cout << "║   [S] Yes, Exit                      ║\n";
+    cout << "║   [C] Cancel                         ║\n";
+    cout << "╚══════════════════════════════════════╝\n\n";
+
+    cout << "Choice: ";
+    cin >> choice;
+
+    if (choice == "s")
+    {
+        cout << "\n╔══════════════════════════════════════╗\n";
+        cout << "║        CLOSING SYSTEM...             ║\n";
+        cout << "╚══════════════════════════════════════╝\n\n";
+
+        cout << "Saving session";
+
+        for (int i = 0; i < 4; i++)
+        {
+            Sleep(400);
+            cout << ".";
+        }
+
+        cout << "\n\n╔══════════════════════════════════════╗\n";
+        cout << "║        GOODBYE, SEE YOU AGAIN !      ║\n";
+        cout << "║        GRAND HOTEL SYSTEM CLOSED     ║\n";
+        cout << "╚══════════════════════════════════════╝\n";
+
+        Sleep(1200);
+        return 0;
+    }
+    else
+    {
+        cout << "\n╔══════════════════════════════════════╗\n";
+        cout << "║        EXIT CANCELLED ✕              ║\n";
+        cout << "╚══════════════════════════════════════╝\n";
+    }
+
+    break;
+}
 
         default:
             cout << "Invalid! Please try again...\n";
